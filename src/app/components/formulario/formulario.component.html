@@ -1,0 +1,14 @@
+<div class="container">
+    <mat-form-field>
+        <input matInput placeholder="Nombre" name="nombre" [(ngModel)]='this.producto.seleccion.nombre'>
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput placeholder="Cantidad" name="nombre" [(ngModel)]='this.producto.seleccion.cantidad'>
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput placeholder="Precio" name="precio" [(ngModel)]='this.producto.seleccion.precio'>
+    </mat-form-field>
+    <button mat-stroked-button color="accent" (click)="onSaveFormulario()">Guardar<mat-icon>save</mat-icon></button>
+</div>

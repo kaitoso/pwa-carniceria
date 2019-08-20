@@ -1,0 +1,68 @@
+<mat-toolbar color="primary">
+
+    <mat-toolbar-row>
+        <span>PWA Carnicería</span> &nbsp; &nbsp; &nbsp; &nbsp;
+        <div *ngIf="this.trueFalse; else cerrado">
+            <button mat-raised-button color="accent" (click)="pruebaBoton()">Local abierto <mat-icon>meeting_room</mat-icon></button>
+        </div>
+        <ng-template #cerrado>
+            <div>
+                <button mat-raised-button color="warn" (click)="pruebaBoton()">Local cerrado <mat-icon>no_meeting_room</mat-icon></button>
+            </div>
+
+        </ng-template>
+        <span class="espacio-blanco"></span>
+        <button class="" mat-stroked-button color="warn" (click)="logout()">Cerrar Sesion <mat-icon>clear</mat-icon></button>
+
+    </mat-toolbar-row>
+
+
+
+</mat-toolbar>
+
+
+<mat-form-field>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
+</mat-form-field>
+<div class="container">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+
+
+        <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+            <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="cantidad">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Cantidad </th>
+            <td mat-cell *matCellDef="let element"> {{element.cantidad}} </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="precio">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Precio </th>
+            <td mat-cell *matCellDef="let element"> {{element.precio}} </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="acciones">
+            <th mat-header-cell *matHeaderCellDef> Acciones: &nbsp; &nbsp;
+                <button mat-stroked-button color="accent" (click)="onAdd()">Agregar<mat-icon>add</mat-icon></button>
+
+            </th>
+            <td mat-cell *matCellDef="let element">
+                <a mat-stroked-button routerLink="." (click)="onEdit(element)">Editar <mat-icon>edit</mat-icon></a>
+                <button mat-stroked-button color="warn" (click)="onDelete(element.id)">Eliminar<mat-icon>delete</mat-icon></button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+
+
+
+
+</div>
