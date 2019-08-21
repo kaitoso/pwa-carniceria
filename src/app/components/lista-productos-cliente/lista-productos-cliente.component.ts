@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
 import { ProductoService } from '../../services/producto.service';
-import { BotonService, Boton } from '../../services/boton.service';
+import { BotonClienteService, Boton } from '../../services/boton-cliente.service';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { ProductoCliService } from '../../services/producto-cli.service';
 
 
 
@@ -13,9 +14,11 @@ import { Router } from '@angular/router';
   templateUrl: './lista-productos-cliente.component.html',
   styleUrls: ['./lista-productos-cliente.component.css']
 })
-export class ListaProductosClienteComponent implements OnInit {
-  valorBoton: any;
+export class ListaProductosClienteComponent implements OnInit, AfterViewInit, OnDestroy {
+  valorBoton;
   trueFalse;
+  listaProductos;
+  estadoBoton;
   
  displayedColumns: string[] = ['nombre', 'cantidad', 'precio'];
  dataSource = new MatTableDataSource();
@@ -27,38 +30,42 @@ async ngOnInit() {
   // console.log(this.aux= this.botonService.getBoton());
 
 
-   this.productoService.getProductos().subscribe(res => this.dataSource.data = res );
-   this.valorBoton = await this.botonService.getBotonInit();
-   this.trueFalse = this.valorBoton.abierto;
-      
- 
+   console.log('a ver si imprime esto', this.dataSource.data);
    
+   this.valorBoton = await this.botonService.getBotonInit().subscribe(res => {this.trueFalse = res.abierto;});
+  // this.trueFalse = this.valorBoton.abierto;
 
-   console.log(this.valorBoton);
-   
+ }
 
-   
-
-   
-
+ ngOnDestroy(){
+  this.listaProductos.unsubscribe();
+  this.estadoBoton.unsubscribe();
+  this.valorBoton.unsubscribe();
  
  }
 
 
 
 ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
-    
+  console.log('a ver si imprime esto2',this.dataSource.data);
 
+    this.dataSource.sort = this.sort;
+    console.log('a ver si imprime esto3',this.dataSource.data);
+
+    
       
      
     
  }
 
- constructor(private productoService: ProductoService, private botonService: BotonService,
+ constructor(private productoCliService: ProductoCliService, private botonService: BotonClienteService,
              private authService: AuthService, private router: Router) {
-              this.botonService.getBoton().subscribe(res => { console.log(res.abierto, 'probando dentro');
-                                                              this.trueFalse = res.abierto; } );
+
+        
+              
+        this.listaProductos =  this.productoCliService.getProductos().subscribe(res => {this.dataSource.data = res; });
+
+        this.estadoBoton =  this.botonService.getBoton().subscribe(res => { this.trueFalse = res.abierto; } );
               }
 
  applyFilter(filterValue: string) {
@@ -68,6 +75,6 @@ ngAfterViewInit() {
 
 
 login(){
-    this.router.navigate(['/login']);
+    this.router.navigate(['/admin/lista-productos']);
 }
 }

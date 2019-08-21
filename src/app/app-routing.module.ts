@@ -5,14 +5,15 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { ListaProductosComponent } from './components/lista-productos/lista-productos.component';
 import { ListaProductosClienteComponent } from './components/lista-productos-cliente/lista-productos-cliente.component';
+import { AuthGuard } from './guards/auth.guard';
 
 
 
 
 const routes: Routes = [
-  {path: '', component: ListaProductosClienteComponent},
+  {path: '', component: ListaProductosClienteComponent },
   {path: 'login', component: LoginComponent },
-  {path: 'admin/lista-productos', component: ListaProductosComponent }
+  {path: 'admin/lista-productos', component: ListaProductosComponent, canActivate:[AuthGuard] }
 
 ];
 

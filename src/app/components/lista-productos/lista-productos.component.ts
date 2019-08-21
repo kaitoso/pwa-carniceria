@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild,AfterViewInit,OnDestroy } from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
 import { ProductoService } from '../../services/producto.service';
@@ -17,9 +17,13 @@ import { Router } from '@angular/router';
   templateUrl: './lista-productos.component.html',
   styleUrls: ['./lista-productos.component.css']
 })
-export class ListaProductosComponent implements OnInit {
-   valorBoton: any;
+export class ListaProductosComponent implements OnInit, AfterViewInit, OnDestroy {
+   valorBoton;
+   valorBotonCambiar;
    trueFalse;
+   listadoProductos;
+   estadoBoton;
+   gatillador = false;
 
   displayedColumns: string[] = ['nombre', 'cantidad', 'precio', 'acciones'];
   dataSource = new MatTableDataSource();
@@ -28,22 +32,35 @@ export class ListaProductosComponent implements OnInit {
  async ngOnInit() {
     console.log('primer init', this.valorBoton);
 
-
-
-
-    this.productoService.getProductos().subscribe(res => this.dataSource.data = res );
-    this.valorBoton = await this.botonService.getBotonInit();
-    this.trueFalse = this.valorBoton.abierto;
+    
+    this.valorBoton = this.botonService.getBotonInit().subscribe(res => {this.trueFalse = res.abierto; console.log('aers');
+    });
   }
 
 
  ngAfterViewInit() {
+
      this.dataSource.sort = this.sort;
+
+  }
+
+  ngOnDestroy(){
+    this.listadoProductos.unsubscribe();
+    this.estadoBoton.unsubscribe();
+    this.valorBoton.unsubscribe();
+    if(this.gatillador){
+      this.valorBotonCambiar.unsubscribe();
+    }
+    
+    
   }
 
   constructor(private productoService: ProductoService, private botonService: BotonService,
               public dialog: MatDialog, private authService: AuthService, private router: Router) {
-                this.botonService.getBoton().subscribe(res => { this.trueFalse = res.abierto; } );
+
+                this.listadoProductos = this.productoService.getProductos().subscribe(res => this.dataSource.data = res );
+               
+                this.estadoBoton = this.botonService.getBoton().subscribe(res => { this.trueFalse = res.abierto; } );
                }
 
   applyFilter(filterValue: string) {
@@ -91,13 +108,13 @@ export class ListaProductosComponent implements OnInit {
 
 
   pruebaBoton() {
-    this.botonService.getBoton().subscribe(res =>  this.trueFalse = res.abierto);
-    this.botonService.cambiaBoton(this.trueFalse);
+   this.valorBotonCambiar = this.botonService.getBoton().subscribe(res => { this.trueFalse = res.abierto ; this.gatillador = true;});
+   this.botonService.cambiaBoton(this.trueFalse);
 
   }
 
  logout() {
-    this.authService.logoutUSer().then((res) => this.router.navigate(['/login']) );
+    this.authService.logoutUSer().then((res) => this.router.navigateByUrl('/') );
  }
 
 }

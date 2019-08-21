@@ -10,7 +10,7 @@ export interface Boton {abierto: boolean; }
 @Injectable({
   providedIn: 'root'
 })
-export class BotonService {
+export class BotonClienteService {
 
 
   private abiertoCerradoCollection: AngularFirestoreDocument<Boton>;
@@ -38,18 +38,5 @@ export class BotonService {
    }
 
 
-  cambiaBoton(prueba) {
-
-      const aux2: Boton = {
-        abierto: prueba
-      };
-      const aux3 = aux2;
-      if (aux2.abierto === true) {
-        aux3.abierto = false;
-        return this.abiertoCerradoCollection.update(aux3);
-     } else {
-      aux3.abierto = true;
-      return this.abiertoCerradoCollection.update(aux3);
-     }
-   }
+  
 }
