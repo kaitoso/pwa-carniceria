@@ -1,0 +1,56 @@
+<mat-toolbar color="primary">
+
+    <mat-toolbar-row>
+        <span>PWA Carnicería</span> &nbsp; &nbsp; &nbsp; &nbsp;
+        <div *ngIf="this.trueFalse; else cerrado">
+            <button mat-raised-button color="accent">Local abierto <mat-icon>meeting_room</mat-icon></button>
+        </div>
+        <ng-template #cerrado>
+            <div>
+                <button mat-raised-button color="warn">Local cerrado <mat-icon>no_meeting_room</mat-icon></button>
+            </div>
+
+        </ng-template>
+        &nbsp; &nbsp; &nbsp; &nbsp; <a [routerLink]="['/']">Inicio</a>
+        <span class="espacio-blanco"></span>
+        <button mat-stroked-button color="accent" (click)="login()">Iniciar sesion <mat-icon>account_box</mat-icon></button>
+
+    </mat-toolbar-row>
+
+
+
+</mat-toolbar>
+<div class="margen">
+    <mat-tab-group class="container centra">
+        <mat-tab class="arriba" label="Lunes">
+            <p class="centra">Mañana: de 09:00 a 14:30 </p>
+            <p class="centra">Tarde: Cerrado</p>
+        </mat-tab>
+        <mat-tab class="arriba" label="Martes">
+            <p class="centra">Mañana: de 09:00 a 14:30 </p>
+            <p class="centra">Tarde: de 18:00 a 20:30</p>
+        </mat-tab>
+        <mat-tab class="arriba" label="Miercoles">
+            <p class="centra">Mañana: de 09:00 a 14:30 </p>
+            <p class="centra">Tarde: de 18:00 a 20:30</p>
+        </mat-tab>
+        <mat-tab class="arriba" label="Jueves">
+            <p class="centra">Mañana: de 09:00 a 14:30 </p>
+            <p class="centra">Tarde: de 18:00 a 20:30</p>
+        </mat-tab>
+        <mat-tab class="arriba" label="Viernes">
+            <p class="centra">Mañana: de 09:00 a 14:00 </p>
+            <p class="centra">Tarde: de 18:00 a 20:30</p>
+        </mat-tab>
+        <mat-tab class="arriba" label="Sabado">
+            <p class="centra">Mañana: de 09:00 a 15:00 </p>
+            <p class="centra">Tarde: de 18:00 a 20:30</p>
+        </mat-tab>
+        <mat-tab class="arriba" label="Domingo">
+            <p class="centra">Mañana: de 09:00 a 15:00 </p>
+            <p class="centra">Tarde: Cerrado</p>
+        </mat-tab>
+
+    </mat-tab-group>
+
+</div>

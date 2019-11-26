@@ -1,0 +1,20 @@
+.container {
+    justify-content: center;
+}
+
+.margen {
+    padding-top: 5%;
+}
+
+.centra {
+    text-align: center;
+    font-size: 50px;
+}
+
+.arriba {
+    margin-top: 20px;
+}
+
+.espacio-blanco {
+    flex: 1 1 auto;
+}

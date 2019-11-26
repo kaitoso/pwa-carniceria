@@ -1,48 +1,57 @@
-<mat-toolbar color="primary">
+<header>
+    <mat-toolbar color="primary">
 
-    <mat-toolbar-row>
-        <span>PWA Carnicería</span> &nbsp; &nbsp; &nbsp; &nbsp;
-        <div *ngIf="this.trueFalse; else cerrado">
-            <button mat-raised-button color="accent" (click)="pruebaBoton()">Local abierto <mat-icon>meeting_room</mat-icon></button>
-        </div>
-        <ng-template #cerrado>
-            <div>
-                <button mat-raised-button color="warn" (click)="pruebaBoton()">Local cerrado <mat-icon>no_meeting_room</mat-icon></button>
+        <mat-toolbar-row>
+
+            <div class="row">
+                <div class="col-xs-4 col-md-4"><span>PWA Carnicería</span></div>
+
+                <div class="col-xs-4 col-md-4" *ngIf="this.trueFalse; else cerrado">
+                    <button mat-raised-button color="accent" (click)="pruebaBoton()">Local abierto <mat-icon>meeting_room</mat-icon></button>
+                </div>
+                <ng-template #cerrado>
+                    <div class=" col-xs-4col-md-4">
+                        <button mat-raised-button color="warn" (click)="pruebaBoton()">Local cerrado <mat-icon>no_meeting_room</mat-icon></button>
+                    </div>
+
+                </ng-template>
+
+
+                <div class="col-xs-4 col-md-4 pull-right">
+                    <button mat-stroked-button color="warn" (click)="logout()">Cerrar Sesion <mat-icon>clear</mat-icon></button>
+                </div>
             </div>
-
-        </ng-template>
-        <span class="espacio-blanco"></span>
-        <button class="" mat-stroked-button color="warn" (click)="logout()">Cerrar Sesion <mat-icon>clear</mat-icon></button>
-
-    </mat-toolbar-row>
+        </mat-toolbar-row>
 
 
 
-</mat-toolbar>
+    </mat-toolbar>
 
+</header>
 
+<div class="h3 text-center pt-2">Agregar productos al stock</div>
 <mat-form-field>
     <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
 </mat-form-field>
-<div class="container">
+<div class="containerr">
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
 
 
         <ng-container matColumnDef="nombre">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
-            <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+            <td (click)="agrega(element)" mat-cell *matCellDef="let element"> {{element.nombre}} </td>
         </ng-container>
 
 
         <ng-container matColumnDef="cantidad">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Cantidad </th>
-            <td mat-cell *matCellDef="let element"> {{element.cantidad}} </td>
+            <td mat-cell *matCellDef="let element"> {{element.cantidad}} kg</td>
         </ng-container>
 
 
         <ng-container matColumnDef="precio">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Precio </th>
-            <td mat-cell *matCellDef="let element"> {{element.precio}} </td>
+            <td mat-cell *matCellDef="let element"> {{element.precio | currency:'CLP':'symbol'}} </td>
         </ng-container>
 
 
@@ -52,17 +61,76 @@
 
             </th>
             <td mat-cell *matCellDef="let element">
-                <a mat-stroked-button routerLink="." (click)="onEdit(element)">Editar <mat-icon>edit</mat-icon></a>
+                <a mat-stroked-button color="basic" routerLink="." (click)="onEdit(element)">Editar <mat-icon>edit</mat-icon></a> &nbsp;
                 <button mat-stroked-button color="warn" (click)="onDelete(element.id)">Eliminar<mat-icon>delete</mat-icon></button>
             </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
     </table>
 
-
-
-
-
 </div>
+
+
+<mat-divider></mat-divider>
+<div class="h3 text-center pt-5">Descontar productos del stock</div>
+<section class="container">
+    <form [formGroup]="myForm" (ngSubmit)="descuenta()">
+        <div class="row">
+            <div class="col-md-4">
+                <mat-form-field class="">
+                    <input [disabled] matInput #produ formControlName="produ" placeholder="Ingrese producto a descontar del stock">
+                </mat-form-field>
+
+            </div>
+            <div class="col-md-4">
+                <mat-form-field class="">
+                    <input formControlName="canti" pattern="[a-z]{1,15}" matInput #canti placeholder="Ingrese cantidad">
+                </mat-form-field>
+            </div>
+            <div class="col-md-4 pt-2">
+                <button type="submit" mat-stroked-button color="accent">Agregar<mat-icon>add</mat-icon></button>
+            </div>
+        </div>
+    </form>
+
+    <div id="descuento">
+        <table class="table cambiatabla" id="descuento">
+            <thead>
+                <tr>
+                    <th scope="col">Nombre </th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col">Valor</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let producto of arregloProductos">
+                    <th scope="col">{{producto.nombre}}</th>
+                    <th scope="col">{{producto.cantidad}} kg</th>
+                    <th scope="col">{{producto.precio | currency:'CLP':'symbol'}}</th>
+                    <th scope="col">{{producto.precio * producto.cantidad | currency:'CLP':'symbol'}}</th>
+                    <button mat-stroked-button color="warn" (click)="eliminaDescuento(producto)">Eliminar<mat-icon>delete</mat-icon></button>
+
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th scope="col"> </th>
+                    <th scope="col"> </th>
+                    <th scope="col">Total: </th>
+                    <th colspan="3">{{total | currency:'CLP':'symbol'}}</th>
+
+                </tr>
+            </tfoot>
+        </table>
+
+
+
+    </div>
+
+    <button mat-stroked-button class="text-center" color="accent" (click)="imprimePDF()">Terminar<mat-icon>save</mat-icon></button>
+
+</section>

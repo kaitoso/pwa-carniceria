@@ -40,3 +40,6 @@ export class FormularioComponent implements OnInit {
     this.dialogRef.close();
   }
 }
+
+
+

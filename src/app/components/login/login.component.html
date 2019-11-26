@@ -1,12 +1,13 @@
 <section id="login" class="mb-5 mt-5">
     <div class="container">
-        <div class="row">
-            <div class="col-xs-12 col-sm-6 col-md-4 mx-auto">
+        <div class="row centra">
+            <div class="col-xs-12 col-sm-7 col-md-5 mx-auto">
                 <div class="card_login">
                     <div class="card">
                         <div class="card-body text-center">
                             <form #formLogin="ngForm" (submit)="onLogin()">
-                                <h1 class="h3 mb-3 font-weight-normal">Inicia Sesion</h1>
+                                <h1 class="h3 mb-3 font-weight-normal f">Inicia Sesión</h1>
+
                                 <div class="alert alert-danger" role="alert" *ngIf="error">
                                     {{errorTipo[errorNumero]}}
                                 </div>
@@ -16,14 +17,31 @@
                                 <div class="form-group">
                                     <input [(ngModel)]="pass" type="password" id="password" name="password" class="form-control" placeholder="Password" required>
                                 </div>
-                                <button type="submit" class="btn btn-lg btn-primary btn-block">Iniciar Sesion</button>
+                                <button type="submit" class="btn btn-lg f boton btn-block">Iniciar Sesion</button>
                                 <div class="form-group">
                                 </div>
                             </form>
                         </div>
                     </div>
+
                 </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+</section>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="text-center">
+                <a routerLink="/" class=" letras centrado">Volver</a>
             </div>
         </div>
     </div>
-</section>
+</div>

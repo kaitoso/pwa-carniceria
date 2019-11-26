@@ -4,7 +4,7 @@ import {MatSort} from '@angular/material/sort';
 import { ProductoService } from '../../services/producto.service';
 import { BotonClienteService, Boton } from '../../services/boton-cliente.service';
 import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ProductoCliService } from '../../services/producto-cli.service';
 
 
@@ -25,12 +25,11 @@ export class ListaProductosClienteComponent implements OnInit, AfterViewInit, On
 @ViewChild(MatSort, {static: true}) sort: MatSort;
 
 async ngOnInit() {
-   console.log('primer init', this.valorBoton);
-
+   
   // console.log(this.aux= this.botonService.getBoton());
 
 
-   console.log('a ver si imprime esto', this.dataSource.data);
+  
    
    this.valorBoton = await this.botonService.getBotonInit().subscribe(res => {this.trueFalse = res.abierto;});
   // this.trueFalse = this.valorBoton.abierto;
@@ -47,10 +46,10 @@ async ngOnInit() {
 
 
 ngAfterViewInit() {
-  console.log('a ver si imprime esto2',this.dataSource.data);
+ 
 
     this.dataSource.sort = this.sort;
-    console.log('a ver si imprime esto3',this.dataSource.data);
+    
 
     
       
@@ -77,4 +76,9 @@ ngAfterViewInit() {
 login(){
     this.router.navigate(['/admin/lista-productos']);
 }
+
+horarios(){
+  this.router.navigate(['/horarios']);
+
+ }
 }
